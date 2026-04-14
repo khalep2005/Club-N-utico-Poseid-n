@@ -1,0 +1,301 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Anchor,
+  Award,
+  Ship,
+  GraduationCap,
+  Waves,
+  Phone,
+  Mail,
+  MapPin,
+  Facebook,
+  Instagram,
+  Twitter,
+  ChevronRight,
+  Menu,
+  X,
+} from "lucide-react";
+
+import heroBanner from "@/assets/hero-banner.jpg";
+import aboutUs from "@/assets/about-us.jpg";
+import gallery1 from "@/assets/gallery-1.jpg";
+import gallery2 from "@/assets/gallery-2.jpg";
+import gallery3 from "@/assets/gallery-3.jpg";
+import gallery4 from "@/assets/gallery-4.jpg";
+import gallery5 from "@/assets/gallery-5.jpg";
+import gallery6 from "@/assets/gallery-6.jpg";
+
+const navLinks = ["Inicio", "Nosotros", "Servicios", "Galería", "Contacto"];
+
+const services = [
+  { icon: Award, title: "Membresía Exclusiva", desc: "Acceso a instalaciones premium y beneficios únicos para socios y sus familias." },
+  { icon: Ship, title: "Radas y Amarres de Seguridad", desc: "Espacios de fondeo seguros y amarres modernos para todo tipo de embarcaciones." },
+  { icon: GraduationCap, title: "Escuela de Navegación y Buceo", desc: "Cursos certificados para principiantes y avanzados con instructores profesionales." },
+  { icon: Waves, title: "Zonas de Recreación", desc: "Piscinas, cafetería gourmet y áreas sociales con vista al mar." },
+];
+
+const galleryImages = [
+  { src: gallery1, alt: "Velero en el océano", label: "Embarcaciones" },
+  { src: gallery2, alt: "Muelle del club", label: "Muelles" },
+  { src: gallery3, alt: "Restaurante del club", label: "Restaurante" },
+  { src: gallery4, alt: "Evento social", label: "Eventos" },
+  { src: gallery5, alt: "Piscina del club", label: "Recreación" },
+  { src: gallery6, alt: "Escuela de buceo", label: "Buceo" },
+];
+
+const LandingPage = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [form, setForm] = useState({ nombre: "", correo: "", mensaje: "" });
+
+  const scrollTo = (id: string) => {
+    setMobileMenu(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({ title: "Mensaje enviado", description: "Nos pondremos en contacto contigo pronto." });
+    setForm({ nombre: "", correo: "", mensaje: "" });
+  };
+
+  return (
+    <div className="min-h-screen scroll-smooth">
+      {/* HEADER — Azul Marino profundo */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-blue-950/95 backdrop-blur-md border-b border-blue-900">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 h-16">
+          <button onClick={() => scrollTo("inicio")} className="flex items-center gap-2">
+            <Anchor className="h-7 w-7 text-amber-400" />
+            <span className="font-bold text-lg text-white hidden sm:inline">Club Náutico Poseidón</span>
+          </button>
+
+          <nav className="hidden md:flex items-center gap-6">
+            {navLinks.map((l) => (
+              <button
+                key={l}
+                onClick={() => scrollTo(l.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))}
+                className="text-sm font-medium text-blue-200 hover:text-sky-300 transition-colors"
+              >
+                {l}
+              </button>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/login")}
+              className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-md text-sm font-semibold bg-amber-500 text-white hover:bg-amber-600 transition-colors"
+            >
+              Iniciar Sesión
+            </button>
+            <button className="md:hidden text-white" onClick={() => setMobileMenu(!mobileMenu)}>
+              {mobileMenu ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+
+        {mobileMenu && (
+          <div className="md:hidden border-t border-blue-900 bg-blue-950 px-4 pb-4 space-y-2">
+            {navLinks.map((l) => (
+              <button
+                key={l}
+                onClick={() => scrollTo(l.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))}
+                className="block w-full text-left py-2 text-sm font-medium text-blue-200 hover:text-sky-300"
+              >
+                {l}
+              </button>
+            ))}
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="w-full mt-2 h-9 rounded-md text-sm font-semibold bg-amber-500 text-white hover:bg-amber-600 transition-colors"
+            >
+              Iniciar Sesión
+            </button>
+          </div>
+        )}
+      </header>
+
+      {/* HERO — Overlay azul oscuro */}
+      <section id="inicio" className="relative h-screen flex items-center justify-center">
+        <img src={heroBanner} alt="Club Náutico Poseidón marina al atardecer" className="absolute inset-0 w-full h-full object-cover" width={1920} height={1080} />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 via-blue-900/50 to-blue-950/80" />
+        <div className="relative z-10 text-center px-4 max-w-3xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-4 drop-shadow-lg">
+            Exclusividad y Pasión por el Mar
+          </h1>
+          <p className="text-lg sm:text-xl text-blue-100/90 mb-8">
+            Únete al Club Náutico Poseidón del Perú
+          </p>
+          <button
+            onClick={() => scrollTo("servicios")}
+            className="inline-flex items-center gap-2 h-11 px-8 rounded-md text-sm font-medium border-2 border-white text-white bg-transparent hover:bg-white hover:text-blue-900 transition-colors"
+          >
+            Conoce más <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </section>
+
+      {/* NOSOTROS — Fondo Azul Océano vibrante */}
+      <section id="nosotros" className="py-20 px-4 bg-blue-950">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-1 w-10 bg-amber-400 rounded-full" />
+              <h2 className="text-3xl font-bold text-white">Sobre Nosotros</h2>
+            </div>
+            <p className="text-blue-100 mb-4">
+              Fundado en 1965, el Club Náutico Poseidón del Perú es una institución de prestigio ubicada en el puerto del Callao, 
+              dedicada a la promoción del deporte náutico y la vida social de sus asociados.
+            </p>
+            <div className="space-y-4">
+              <div className="rounded-lg bg-blue-900/60 border border-blue-700 p-4">
+                <h3 className="font-semibold text-amber-400 mb-1">Misión</h3>
+                <p className="text-sm text-blue-100">Promover el deporte náutico y la exclusividad entre nuestros socios, garantizando servicios de primer nivel.</p>
+              </div>
+              <div className="rounded-lg bg-blue-900/60 border border-blue-700 p-4">
+                <h3 className="font-semibold text-amber-400 mb-1">Visión</h3>
+                <p className="text-sm text-blue-100">Ser el club náutico líder del Pacífico, reconocido por su tradición, calidad y excelencia.</p>
+              </div>
+            </div>
+          </div>
+          <img src={aboutUs} alt="Socios navegando" className="rounded-xl shadow-lg w-full h-80 object-cover ring-2 ring-amber-400/30" loading="lazy" width={640} height={512} />
+        </div>
+      </section>
+
+      {/* SERVICIOS — Fondo celeste brisa marina */}
+      <section id="servicios" className="py-20 px-4 bg-sky-50">
+        <div className="max-w-6xl mx-auto text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="h-1 w-10 bg-amber-400 rounded-full" />
+            <h2 className="text-3xl font-bold text-blue-900">Nuestros Servicios</h2>
+            <div className="h-1 w-10 bg-amber-400 rounded-full" />
+          </div>
+          <p className="text-blue-700/70 max-w-xl mx-auto">Todo lo que necesitas para disfrutar del mar con seguridad y confort.</p>
+        </div>
+        <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((s) => (
+            <Card key={s.title} className="text-center bg-white border-0 shadow-lg shadow-blue-900/10 hover:shadow-xl hover:shadow-blue-900/15 transition-shadow">
+              <CardContent className="pt-8 pb-6 px-6 flex flex-col items-center gap-4">
+                <div className="h-14 w-14 rounded-full bg-blue-50 flex items-center justify-center">
+                  <s.icon className="h-7 w-7 text-blue-700" />
+                </div>
+                <h3 className="font-semibold text-blue-900">{s.title}</h3>
+                <p className="text-sm text-blue-700/60">{s.desc}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* GALERÍA — Fondo blanco con toque azul */}
+      <section id="galeria" className="py-20 px-4 bg-white">
+        <div className="max-w-6xl mx-auto text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="h-1 w-10 bg-amber-400 rounded-full" />
+            <h2 className="text-3xl font-bold text-blue-900">Galería</h2>
+            <div className="h-1 w-10 bg-amber-400 rounded-full" />
+          </div>
+          <p className="text-blue-700/70">Conoce nuestras instalaciones y actividades.</p>
+        </div>
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4">
+          {galleryImages.map((img) => (
+            <div key={img.label} className="group relative overflow-hidden rounded-xl">
+              <img src={img.src} alt={img.alt} className="w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" width={640} height={512} />
+              <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/50 transition-colors flex items-end">
+                <span className="text-white font-medium text-sm px-4 py-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  {img.label}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CONTACTO — Fondo Azul Marino */}
+      <section id="contacto" className="py-20 px-4 bg-blue-900">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-1 w-10 bg-amber-400 rounded-full" />
+              <h2 className="text-3xl font-bold text-white">Contáctanos</h2>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Input placeholder="Nombre completo" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} required className="bg-white text-blue-900 border-0 placeholder:text-blue-400" />
+              <Input type="email" placeholder="Correo electrónico" value={form.correo} onChange={(e) => setForm({ ...form, correo: e.target.value })} required className="bg-white text-blue-900 border-0 placeholder:text-blue-400" />
+              <Textarea placeholder="Tu mensaje" rows={4} value={form.mensaje} onChange={(e) => setForm({ ...form, mensaje: e.target.value })} required className="bg-white text-blue-900 border-0 placeholder:text-blue-400" />
+              <button type="submit" className="inline-flex items-center justify-center h-10 px-6 rounded-md text-sm font-semibold bg-amber-500 text-white hover:bg-amber-600 transition-colors">
+                Enviar mensaje
+              </button>
+            </form>
+          </div>
+          <div className="space-y-6">
+            <h3 className="font-semibold text-white text-lg">Información de contacto</h3>
+            <div className="space-y-4 text-blue-200 text-sm">
+              <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" /><span>Av. Marina Náutica 450, Callao, Lima, Perú</span></div>
+              <div className="flex items-center gap-3"><Phone className="h-5 w-5 text-amber-400 shrink-0" /><span>(01) 429-7800</span></div>
+              <div className="flex items-center gap-3"><Mail className="h-5 w-5 text-amber-400 shrink-0" /><span>contacto@cnposeidon.pe</span></div>
+            </div>
+            <div className="rounded-xl bg-blue-800 h-48 flex items-center justify-center text-blue-300 text-sm border border-blue-700">
+              <MapPin className="h-6 w-6 mr-2 text-amber-400" /> Mapa — Callao, Lima, Perú
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER — Azul más oscuro */}
+      <footer className="bg-blue-950 py-12 px-4">
+        <div className="max-w-6xl mx-auto grid sm:grid-cols-3 gap-8">
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Anchor className="h-6 w-6 text-amber-400" />
+              <span className="font-bold text-white">Club Náutico Poseidón</span>
+            </div>
+            <p className="text-sm text-blue-300">Exclusividad y tradición náutica desde 1965.</p>
+          </div>
+          <div>
+            <h4 className="font-semibold text-white mb-3">Enlaces rápidos</h4>
+            <ul className="space-y-1">
+              {navLinks.map((l) => (
+                <li key={l}>
+                  <button
+                    onClick={() => scrollTo(l.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))}
+                    className="text-sm text-blue-400 hover:text-sky-300 transition-colors"
+                  >
+                    {l}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold text-white mb-3">Síguenos</h4>
+            <div className="flex gap-3">
+              <a href="#" className="h-9 w-9 rounded-full bg-blue-900 text-blue-300 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors">
+                <Facebook className="h-4 w-4" />
+              </a>
+              <a href="#" className="h-9 w-9 rounded-full bg-blue-900 text-blue-300 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors">
+                <Instagram className="h-4 w-4" />
+              </a>
+              <a href="#" className="h-9 w-9 rounded-full bg-blue-900 text-blue-300 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors">
+                <Twitter className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-blue-900 text-center text-xs text-blue-500">
+          <p>© 2025 Club Náutico Poseidón del Perú. Todos los derechos reservados.</p>
+          <p className="mt-1">Desarrollado para el Proyecto Integrador</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default LandingPage;
